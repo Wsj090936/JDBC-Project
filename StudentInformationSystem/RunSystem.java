@@ -1,5 +1,5 @@
 package StudentInformationSystem;
-
+//学生信息管理的运行函数
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -7,6 +7,7 @@ import org.junit.Test;
 
 
 public class RunSystem {
+	JDBCTools jdbcTools = new JDBCTools();//JDBC工具类
 	private  Student getInformFromConsole(){//从控制台输入学生信息
 		Student student = new Student();
 		Scanner scanner = new Scanner(System.in);
@@ -35,7 +36,7 @@ public class RunSystem {
 		return student;
 	}
 	public  void addStudent(Student student) {//插入学生信息
-		String sql = "INSERT INTO examsrudent VALUES ("
+		String sql = "INSERT INTO examstudent VALUES ("
 					+student.getFlowID()
 					+",'"+student.getType()
 					+"','"+student.getIDcard()
@@ -43,7 +44,7 @@ public class RunSystem {
 					+"','"+student.getStudentName()
 					+"','"+student.getLocation()
 					+"',"+student.getGrade()+")";
-		JDBCTools.update(sql);
+		jdbcTools.update(sql);
 	}
 
 @Test

@@ -1,5 +1,5 @@
 package StudentInformationSystem;
-
+//JDBC工具类  包含数据库的连接，更新，关闭等功能
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ import java.util.Properties;
 //JDBC的工具类，用于关闭数据库连接操作，更新操作和查询操作
 public class JDBCTools {
 
-	public static void update(String sql){//实现数据库的更新操作
+	public void update(String sql){//实现数据库的更新操作
 		Connection con = null;
 		Statement state = null;
 		
@@ -28,7 +28,7 @@ public class JDBCTools {
 		}
 		
 	}
-	public static Connection getConnection() throws Exception{//连接数据库
+	public Connection getConnection() throws Exception{//连接数据库
 		String driverClass = null;
 		String url = null;
 		String user = null;
@@ -36,7 +36,7 @@ public class JDBCTools {
 		
 		Properties properties = new Properties();
 		
-		InputStream in = Review.class.getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+		InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
 		properties.load(in);
 		
 		driverClass = properties.getProperty("driver");
