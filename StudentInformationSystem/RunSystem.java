@@ -11,7 +11,7 @@ public class RunSystem {
 	private  Student getInformFromConsole(){//从控制台输入学生信息
 		Student student = new Student();
 		Scanner scanner = new Scanner(System.in);
-		
+		System.out.println("请输入考生的详细信息");
 		System.out.print("FlowID:");
 		student.setFlowID(scanner.nextInt());//输入学生流水号
 		
@@ -32,7 +32,7 @@ public class RunSystem {
 		
 		System.out.print("Grade");
 		student.setGrade(scanner.nextInt());//输入学生成绩
-		
+		System.out.println("信息录入成功");
 		return student;
 	}
 	public  void addStudent(Student student) {//插入学生信息
@@ -46,11 +46,30 @@ public class RunSystem {
 					+"',"+student.getGrade()+")";
 		jdbcTools.update(sql);
 	}
+	public void selectStudent(){
+		System.out.println("请选择您要输入的类型:");
+		System.out.println("a:准考证号");
+		System.out.println("b:所在地区");
+		Scanner scanner = new Scanner(System.in);
+		String cur = scanner.next();
+		String sql;
+		if(cur.equals("a")){
+			System.out.println("请输入准考证号:");
+			sql = "SELECT * FROM examstudent WHERE Examcard='"+scanner.next()+"'";
+			jdbcTools.select(sql);
+		}else if(cur.equals("b")){
+			System.out.println("请输入考生地区:");
+			sql = "SELECT * FROM examstudent WHERE Location='"+scanner.next()+"'";
+			jdbcTools.select(sql);
+		}else
+			System.out.println("您的输入有误，请重新进入程序。。。。");
+	}
 
 @Test
 		public void test(){
 			Student student = getInformFromConsole();
 			addStudent(student);
+			selectStudent();
 		}
 			
 		
