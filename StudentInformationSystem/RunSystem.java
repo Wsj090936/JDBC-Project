@@ -46,6 +46,15 @@ public class RunSystem {
 					+"',"+student.getGrade()+")";
 		jdbcTools.update(sql);
 	}
+	public void addStudent1(Student student) {//利用PreparedStatement方法增加学生信息
+		String sql = "INSERT INTO examstudent (flowid,type,idcard,examcard,studentname,location,grade) VALUES (?,?,?,?,?,?,?)";
+		try {
+			jdbcTools.update1(sql, student.getFlowID(),student.getType(),student.getIDcard(),student.getExamcard()
+					,student.getStudentName(),student.getLocation(),student.getGrade());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void selectStudent(){
 		System.out.println("请选择您要输入的类型:");
 		System.out.println("a:准考证号");
@@ -68,8 +77,7 @@ public class RunSystem {
 @Test
 		public void test(){
 			Student student = getInformFromConsole();
-			addStudent(student);
-			selectStudent();
+			addStudent1(student);
 		}
 			
 		

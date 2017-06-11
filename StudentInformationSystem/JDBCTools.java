@@ -3,6 +3,7 @@ package StudentInformationSystem;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -45,7 +46,24 @@ public class JDBCTools {
 			release(rs, con, state);
 		}
 	}
-	public void update(String sql){//实现数据库的更新操作
+	public void update1(String sql , Object ... args){
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(sql);
+			for(int i = 0;i<args.length;i++){//索引的下标从1开始  和数组不一样
+				ps.setObject(i+1, args[i]);
+			}
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			release(con, ps);
+		}
+	}
+	public void update(String sql){//实现数据库的更新操作 使用Statement接口
 		Connection con = null;
 		Statement state = null;
 		
