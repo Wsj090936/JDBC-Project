@@ -12,40 +12,40 @@ import java.util.Properties;
 //JDBC的工具类，用于关闭数据库连接操作，更新操作和查询操作
 public class JDBCTools {
 
-	public void select(String sql){//查询信息
-		Connection con = null;
-		Statement state = null;
-		ResultSet rs = null;
-		
-		try {
-			con = getConnection();
-			
-			state = con.createStatement();
-			
-			rs = state.executeQuery(sql);
-		while(rs.next()){
-			int FlowID = rs.getInt("FlowID");//流水号
-			String Type = rs.getString("Type");//考试类型
-			String IDcard = rs.getString("IDcard");//身份证号
-			String Examcard = rs.getString("Examcard");//准考证号码
-			String StudentName = rs.getString("StudentName");//学生姓名
-			String Location = rs.getString("Location");//区域
-			int Grade = rs.getInt("Grade");//成绩
-			System.out.print("流水号:"+FlowID+"  ");
-			System.out.print("考试类型:"+Type+"  ");
-			System.out.print("身份证号:"+IDcard+"  ");
-			System.out.print("准考证号:"+Examcard+"  ");
-			System.out.print("学生姓名:"+StudentName+"  ");
-			System.out.print("学生所在地:"+Location+"  ");
-			System.out.print("成绩:"+Grade+"  ");
-			System.out.println();
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally{//关闭连接
-			release(rs, con, state);
-		}
-	}
+//	public void select(String sql){//查询信息
+//		Connection con = null;
+//		Statement state = null;
+//		ResultSet rs = null;
+//		
+//		try {
+//			con = getConnection();
+//			
+//			state = con.createStatement();
+//			
+//			rs = state.executeQuery(sql);
+//		while(rs.next()){
+//			int FlowID = rs.getInt("FlowID");//流水号
+//			String Type = rs.getString("Type");//考试类型
+//			String IDcard = rs.getString("IDcard");//身份证号
+//			String Examcard = rs.getString("Examcard");//准考证号码
+//			String StudentName = rs.getString("StudentName");//学生姓名
+//			String Location = rs.getString("Location");//区域
+//			int Grade = rs.getInt("Grade");//成绩
+//			System.out.print("流水号:"+FlowID+"  ");
+//			System.out.print("考试类型:"+Type+"  ");
+//			System.out.print("身份证号:"+IDcard+"  ");
+//			System.out.print("准考证号:"+Examcard+"  ");
+//			System.out.print("学生姓名:"+StudentName+"  ");
+//			System.out.print("学生所在地:"+Location+"  ");
+//			System.out.print("成绩:"+Grade+"  ");
+//			System.out.println();
+//			}
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}finally{//关闭连接
+//			release(rs, con, state);
+//		}
+//	}
 	public void update1(String sql , Object ... args){
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -98,7 +98,7 @@ public class JDBCTools {
 		Class.forName(driverClass);
 		return DriverManager.getConnection(url, user, password);
 	} 
-	public static void release(Connection con , Statement state){//关闭数据库连接
+	public void release(Connection con , Statement state){//关闭数据库连接
 		if(state != null){
 			try {
 				state.close();
@@ -115,7 +115,7 @@ public class JDBCTools {
 		}
 		
 	}
-	public static void release(ResultSet rs , Connection con , Statement state){//关闭数据库连接
+	public void release(ResultSet rs , Connection con , Statement state){//关闭数据库连接
 		if(rs != null)
 		{
 			try {
