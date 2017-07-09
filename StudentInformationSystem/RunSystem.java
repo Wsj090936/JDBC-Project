@@ -1,7 +1,7 @@
 package StudentInformationSystem;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 //学生信息管理的运行函数
 import java.util.Scanner;
 
@@ -66,36 +66,48 @@ public class RunSystem {
 		Scanner scanner = new Scanner(System.in);
 		String cur = scanner.next();
 		String sql = "SELECT * FROM examstudent WHERE ";
+		Student student = null;
 		if(cur.equals("a")){
 			System.out.println("请输入准考证号:");
-			sql = sql+"Examcard='"+scanner.next()+"'";
+			sql = sql+"Examcard=?";
+			student = getStudent(sql,scanner.next());
 		}else if(cur.equals("b")){
-			System.out.println("请输入考生地区:");
-			sql = sql+"IDcard='"+scanner.next()+"'";
+			System.out.println("请输入身份证号:");
+			sql = sql+"IDcard=?";
+			student = getStudent(sql,scanner.next());
 		}else{
 			System.out.println("您的输入有误，请重新进入程序。。。。");
 			throw new RuntimeException();
 		}
-		Student student = getStudent(sql);
 		return student;
 	}
-	public Student getStudent(String sql){//返回学生对象
+	public Student getStudent(String sql,Object ... args){//返回学生对象
 		Student stu = null;
 		Connection con = null;
-		Statement state = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			con = jdbcTools.getConnection();
-			state = con.createStatement();
-			rs = state.executeQuery(sql);
+			ps = con.prepareStatement(sql);
+			for(int i = 0 ; i < args.length ; ++i){
+				ps.setObject(i + 1,args[i]);
+			}
+			rs = ps.executeQuery();
 			if(rs.next()){
-				stu = new Student(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7));
+				stu = new Student();
+						stu.setFlowID(rs.getInt(1));
+						stu.setType(rs.getString(2)); 
+						stu.setIDcard(rs.getString(3));
+						stu.setExamcard(rs.getString(4)); 
+						stu.setStudentName(rs.getString(5)); 
+						stu.setLocation(rs.getString(6)); 
+						stu.setGrade(rs.getInt(7));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
-			jdbcTools.release(rs, con, state);
+			jdbcTools.release(rs, con, ps);
 		}
 		return stu;
 	}
